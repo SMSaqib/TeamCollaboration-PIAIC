@@ -1,5 +1,5 @@
 import inquirer from "inquirer"
-// Define an interface for a Student
+import {getStudentInput,FurtherAction,Std_remove_record,Std_update_record} from '../functions/student_fucntions.js'// Define an interface for a Student
 import {generateUniqueId} from './UniqueStudentID.js'
 
 
@@ -15,71 +15,6 @@ interface Student {
 
 // this is the function 
 
-  async function FurtherAction(){
-  let x=await inquirer.prompt([{message:"Please select your action properly",
-   type:"list",
-   choices:["Remove Record","Update Record"],
-  name:"IFurtherAction"
-  }
-  ]
-  )
-return {IFurtherAction:x.IFurtherAction}}
-  
-
-
- async function getStudentInput(){
- let dat =await inquirer.prompt([{
-      message:"Enter First Name",
-      name:"Ifirstname", 
-      type:"input"
-    },
-    {
-      message:"Enter Last Name",
-      name:"Ilastname", 
-      type:"input"
-    },{
-      message:"Enter Age ",
-      name:"Iage", 
-      type:"input"
-    },
-    {
-      message:"Enter grade",
-      name:"Igrade", 
-      type:"input"
-    },
-    {
-      message:"Enter Password",
-      name:"Ipassword", 
-      type:"input"
-    },
-    {
-      message:"Enter email",
-      name:"Iemail", 
-      type:"input"
-    }
-
-
-  ])  
-    return dat
-  }
-
-  async function verifyStudent(){
-    let student_log_in_verification =await inquirer.prompt([{
-         message:"Enter ID:",
-         name:"IVerify_id", 
-         type:"input"
-       },
-       {
-         message:"Enter Password:",
-         name:"IVerify_password", 
-         type:"input"
-       }
-   
-     ])  
-       return student_log_in_verification
-       
-
-     }
 
   class StudentRepository {
     
@@ -161,4 +96,6 @@ return {IFurtherAction:x.IFurtherAction}}
       this.db.run(sql, [value]);
     }
   }
-  export {Student, StudentRepository,getStudentInput,FurtherAction}
+
+
+  export {Student, StudentRepository}

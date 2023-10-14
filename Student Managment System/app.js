@@ -1,7 +1,9 @@
 #!usr/bin/env node
 import sqlite3 from 'sqlite3';
 import inquirer from 'inquirer';
-import { StudentRepository, FurtherAction } from './student.js';
+import { FurtherAction, Std_remove_record, Std_update_record } from './functions/student_fucntions.js';
+// Define an interface for a Student
+import { StudentRepository } from './student/student.js';
 // Create a SQLite database connection
 let db = new sqlite3.Database('students.db');
 // Initialize the StudentRepository
@@ -26,48 +28,11 @@ switch (confirmation.IConfirmation) {
         let b = await FurtherAction();
         switch (b.IFurtherAction) {
             case "Remove Record":
-                let EnterIDtoDelete = await inquirer.prompt([
-                    { message: "Please Enter  Column Name",
-                        type: "list",
-                        name: "IEnterColumntoDelete",
-                        choices: ["id", "firstName", "lastName", "age", "grade"]
-                        // validate: (x) => {
-                        //   if (typeof x === "string" && x.match(/^\d{1,4}$/)) {
-                        //     return true;
-                        //   } else {
-                        //     return false;
-                        //   }
-                        // },
-                    },
-                    { message: "Please Enter Value",
-                        type: "input",
-                        name: "IEnterValuetoDelete",
-                    }
-                ]);
-                await studentRepo.deleteStudent(EnterIDtoDelete.IEnterColumntoDelete, EnterIDtoDelete.IEnterValuetoDelete);
+                let x = await Std_remove_record();
+                await studentRepo.deleteStudent(x.IEnterColumntoDelete, x.IEnterValuetoDelete);
                 break;
             case "Update Record":
-                let Update_Std_record = await inquirer.prompt([
-                    { message: "Please Enter Criteria Column Name",
-                        type: "list",
-                        name: "IUpdate_Crit_column",
-                        choices: ["id", "firstName", "lastName", "age", "grade"]
-                    },
-                    { message: "Please Enter lookup/Criteria Value",
-                        type: "input",
-                        name: "IUpdate_Crit_Val",
-                    },
-                    { message: "Please Select Filed for update ",
-                        type: "list",
-                        name: "IUpdate_update_column",
-                        choices: ["id", "firstName", "lastName", "age", "grade"]
-                    },
-                    { message: "Please Enter  Value to update",
-                        type: "input",
-                        name: "IUpdate_update_Val",
-                    }
-                ]);
-                console.table(Update_Std_record);
+                let Update_Std_record = await Std_update_record();
                 await studentRepo.updateStudent(Update_Std_record.IUpdate_Crit_column, Update_Std_record.IUpdate_Crit_Val, Update_Std_record.IUpdate_update_column, Update_Std_record.IUpdate_update_Val);
         }
 }
