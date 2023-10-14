@@ -44,6 +44,20 @@ async function getStudentInput() {
     ]);
     return dat;
 }
+async function verifyStudent() {
+    let student_log_in_verification = await inquirer.prompt([{
+            message: "Enter ID:",
+            name: "IVerify_id",
+            type: "input"
+        },
+        {
+            message: "Enter Password:",
+            name: "IVerify_password",
+            type: "input"
+        }
+    ]);
+    return student_log_in_verification;
+}
 class StudentRepository {
     db; // SQLite database connection
     constructor(db) {
@@ -70,7 +84,7 @@ class StudentRepository {
         let studentDetail = await getStudentInput();
         let id = generateUniqueId();
         const sql = `INSERT INTO students (id,firstName, lastName, age, grade,password,email) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        this.db.run(sql, [id, studentDetail.Ifirstname, studentDetail.Ilastname, studentDetail.Iage, studentDetail.Igrade]);
+        this.db.run(sql, [id, studentDetail.Ifirstname, studentDetail.Ilastname, studentDetail.Iage, studentDetail.Igrade, studentDetail.Ipassword, studentDetail.Iemail]);
         console.log(`your Enrollment ID is "${id} please note it`);
     }
     // Retrieve a student by ID
